@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<ui:param name="root" value="#{request.contextPath}/" />
+	<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+	<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+		type="text/css" />
+
+	<!-- Optional theme -->
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"
+		type="text/css" />
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" />
+
+	<!-- Overriding default CSS of primefaces -->
+	<script type="text/javascript"
+		src="/showcase/javax.faces.resource/main/js/perfect-scrollbar.js.xhtml"></script>
+	<script type="text/javascript"
+		src="/showcase/javax.faces.resource/main/js/showcase.js.xhtml"></script>
+
+
+	<style>
+.ui-widget {
+	font-size: 14px;
+}
+</style>
+
+	<title>Login</title>
+
+</h:head>
+
+<h:body>
+	<form id="loginForm" name="loginForm"
+		action="#{request.contextPath}/login" method="post">
+
+		<p:panel id="panel" header="Login">
+			<p:messages id="messages" showDetail="true" autoUpdate="true" />
+			<br />
+			<h:panelGrid id="display" columns="3" cellpadding="4">
+
+				<h:outputText value="Username" for="username"
+					style="padding-left: 30px; padding-right: 30px;" />
+
+				<p:inputText id="username" name="username"
+					value="#{userMB.userName}" required="true" label="Username" />
+				<p:message for="username" />
+
+				<h:outputText value="Password" for="password"
+					style="padding-left: 30px; padding-right: 30px;" />
+
+				<p:password id="password" name="password" value="#{userMB.password}"
+					required="true" label="Password" />
+				<p:message for="password" />
+
+				<p:outputPanel layout="block" style="text-align:center">
+					<h:form>
+						<p:commandButton type="submit" id="login" value="Login"
+							validateClient="true" ajax="false" />
+					</h:form>
+				</p:outputPanel>
+
+			</h:panelGrid>
+
+		</p:panel>
+
+	</form>
+
+</h:body>
+</html>
