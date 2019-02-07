@@ -1,4 +1,4 @@
-package tr.com.innova.cache.coherence;
+package tr.com.java.cache.coherence;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
