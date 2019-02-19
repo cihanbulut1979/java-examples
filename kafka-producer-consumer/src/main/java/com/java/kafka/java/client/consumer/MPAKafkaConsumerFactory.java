@@ -11,11 +11,11 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import com.java.kafka.java.client.common.KafkaConstants;
 
 //Manual Partition Assignment  
-public class MPAKafkaConsumer {
+public class MPAKafkaConsumerFactory {
 	private Properties props;
 	private KafkaConsumer<String, String> consumer;
 
-	public MPAKafkaConsumer(String brokerString) {
+	public MPAKafkaConsumerFactory(String brokerString) {
 
 		props = new Properties();
 

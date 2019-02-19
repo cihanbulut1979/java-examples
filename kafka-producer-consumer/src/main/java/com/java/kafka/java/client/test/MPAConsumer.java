@@ -11,9 +11,9 @@ import org.apache.kafka.clients.consumer.OffsetCommitCallback;
 import org.apache.kafka.common.TopicPartition;
 
 import com.java.kafka.java.client.common.KafkaConstants;
-import com.java.kafka.java.client.consumer.MPAKafkaConsumer;
+import com.java.kafka.java.client.consumer.MPAKafkaConsumerFactory;
 
-public class MPAConsumerStarter {
+public class MPAConsumer {
 	public static void main(String[] args) {
 
 		// Partitions to which a consumer has to assign
@@ -23,7 +23,7 @@ public class MPAConsumerStarter {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				MPAKafkaConsumer mpaKafkaConsumer = new MPAKafkaConsumer(KafkaConstants.KAFKA_BROKERS);
+				MPAKafkaConsumerFactory mpaKafkaConsumer = new MPAKafkaConsumerFactory(KafkaConstants.KAFKA_BROKERS);
 
 				mpaKafkaConsumer.subscribe(Arrays.asList(partition));
 

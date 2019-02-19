@@ -9,7 +9,7 @@ public class KafkaConstants {
 
 	public static String TOPIC_NAME = "kafka-test";
 
-	public static String GROUP_ID_CONFIG = "consumerGroup10";
+	public static String GROUP_ID_CONFIG = "consumerGroup1";
 
 	public static String OFFSET_RESET_LATEST = "latest";
 
