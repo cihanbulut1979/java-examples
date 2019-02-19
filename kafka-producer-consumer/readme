@@ -1,3 +1,13 @@
 
 https://www.oreilly.com/library/view/kafka-the-definitive/9781491936153/ch04.html
 
+## Create topics
+kafka-topics.bat --create --replication-factor 1 --partitions 3 --topic topic-2 --zookeeper  localhost:2181
+
+
+## List created topics
+kafka-topics.bat --list --zookeeper localhost:2181
+
+kafka-topics.bat --list --zookeeper localhost:2181
+
+
