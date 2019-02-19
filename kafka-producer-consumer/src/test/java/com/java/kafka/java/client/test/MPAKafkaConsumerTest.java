@@ -8,6 +8,7 @@ public class MPAKafkaConsumerTest {
 		MPAKafkaConsumer kafkaConsumer = new MPAKafkaConsumer();
 
 		kafkaConsumer.execute(0);
+		//bu consumer dan 2 adet çalýþýrsa 0 nolu partition ayný 2 adet consumer çalýlþýr ve ayný dataalrý okur
 
 	}
 }
