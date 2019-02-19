@@ -1,33 +1,21 @@
 package com.java.kafka.java.client.producer;
 
-import java.util.Properties;
-
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
 
+import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
+import com.java.kafka.java.client.common.MPAKafkaConstants;
 
 public class MPAKafkaProducerFactory {
+	public void produce(int partitionNo, String key, String message) {
 
-	private Properties props;
+		MPAKafkaProducer mpaKafkaProducer = new MPAKafkaProducer(KafkaConstants.KAFKA_BROKERS);
 
-	private KafkaProducer kafkaProducer;
+		ProducerRecord record = new ProducerRecord(MPAKafkaConstants.TOPIC_NAME, partitionNo, key, message);
 
-	public MPAKafkaProducerFactory(String brokerString) {
-		props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);
-		//props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaConstants.CLIENT_ID);
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		mpaKafkaProducer.send(record);
 
-		kafkaProducer = new KafkaProducer(props);
+		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Key : " + key + " Partition : " + partitionNo + " Message : " + message);
 	}
-
-	public void send(ProducerRecord record) {
-		kafkaProducer.send(record);
-	}
-
+	
 }

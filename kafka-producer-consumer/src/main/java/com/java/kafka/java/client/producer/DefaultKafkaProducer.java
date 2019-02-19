@@ -1,33 +1,45 @@
 package com.java.kafka.java.client.producer;
 
-import org.apache.kafka.clients.producer.ProducerRecord;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
-import com.java.kafka.java.client.common.DefaultKafkaConstants;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.serialization.StringSerializer;
+
 import com.java.kafka.java.client.common.KafkaConstants;
 
 public class DefaultKafkaProducer {
-	
-	public void produce(String message) {
 
-		DefaultKafkaProducerFactory mpaKafkaProducer = new DefaultKafkaProducerFactory(KafkaConstants.KAFKA_BROKERS);
+	private Properties props;
 
-		ProducerRecord record = new ProducerRecord(DefaultKafkaConstants.TOPIC_NAME, message);
+	private KafkaProducer kafkaProducer;
 
-		mpaKafkaProducer.send(record);
+	public DefaultKafkaProducer(String brokerString) {
+		props = new Properties();
+		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);
+		// props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaConstants.CLIENT_ID);
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
-		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Message : " + message);
+		kafkaProducer = new KafkaProducer(props);
 	}
-	
-	
-	public void produce(String key, String message) {
 
-		DefaultKafkaProducerFactory mpaKafkaProducer = new DefaultKafkaProducerFactory(KafkaConstants.KAFKA_BROKERS);
-
-		ProducerRecord record = new ProducerRecord(DefaultKafkaConstants.TOPIC_NAME, key, message);
-
-		mpaKafkaProducer.send(record);
-
-		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Key : " + key + " Message : " + message);
+	public void send(ProducerRecord record) {
+		kafkaProducer.send(record);
 	}
-	
+
+	public void sendSync(ProducerRecord record) throws InterruptedException, ExecutionException {
+		long time = System.currentTimeMillis();
+
+		RecordMetadata metadata = (RecordMetadata) kafkaProducer.send(record).get();
+
+		long elapsedTime = System.currentTimeMillis() - time;
+		System.out.printf("sent record(key=%s value=%s) " + "meta(partition=%d, offset=%d) time=%d\n", record.key(),
+				record.value(), metadata.partition(), metadata.offset(), elapsedTime);
+
+	}
+
 }

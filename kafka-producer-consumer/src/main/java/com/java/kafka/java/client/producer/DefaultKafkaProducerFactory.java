@@ -1,32 +1,33 @@
 package com.java.kafka.java.client.producer;
 
-import java.util.Properties;
-
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
 
+import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
 
 public class DefaultKafkaProducerFactory {
+	
+	public void produce(String message) {
 
-	private Properties props;
+		DefaultKafkaProducer mpaKafkaProducer = new DefaultKafkaProducer(KafkaConstants.KAFKA_BROKERS);
 
-	private KafkaProducer kafkaProducer;
+		ProducerRecord record = new ProducerRecord(DefaultKafkaConstants.TOPIC_NAME, message);
 
-	public DefaultKafkaProducerFactory(String brokerString) {
-		props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);
-		//props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaConstants.CLIENT_ID);
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		mpaKafkaProducer.send(record);
 
-		kafkaProducer = new KafkaProducer(props);
+		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Message : " + message);
 	}
+	
+	
+	public void produce(String key, String message) {
 
-	public void send(ProducerRecord record) {
-		kafkaProducer.send(record);
+		DefaultKafkaProducer mpaKafkaProducer = new DefaultKafkaProducer(KafkaConstants.KAFKA_BROKERS);
+
+		ProducerRecord record = new ProducerRecord(DefaultKafkaConstants.TOPIC_NAME, key, message);
+
+		mpaKafkaProducer.send(record);
+
+		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Key : " + key + " Message : " + message);
 	}
-
+	
 }
