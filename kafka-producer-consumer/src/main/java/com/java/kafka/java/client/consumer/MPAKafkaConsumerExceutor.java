@@ -13,7 +13,7 @@ import org.apache.kafka.common.TopicPartition;
 import com.java.kafka.java.client.common.KafkaConstants;
 import com.java.kafka.java.client.common.MPAKafkaConstants;
 
-public class MPAKafkaConsumerFactory {
+public class MPAKafkaConsumerExceutor {
 	public void execute(int partitionNo) {
 
 		// Partitions to which a consumer has to assign

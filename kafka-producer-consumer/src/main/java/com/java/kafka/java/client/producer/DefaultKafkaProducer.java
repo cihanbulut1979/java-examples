@@ -1,5 +1,6 @@
 package com.java.kafka.java.client.producer;
 
+import java.net.InetAddress;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -19,10 +20,15 @@ public class DefaultKafkaProducer {
 
 	public DefaultKafkaProducer(String brokerString) {
 		props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);
-		// props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaConstants.CLIENT_ID);
+		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);		
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		
+		try{
+			props.put(ProducerConfig.CLIENT_ID_CONFIG, InetAddress.getLocalHost().getHostName());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 
 		kafkaProducer = new KafkaProducer(props);
 	}

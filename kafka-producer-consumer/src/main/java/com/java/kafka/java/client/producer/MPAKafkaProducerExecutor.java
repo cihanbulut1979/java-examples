@@ -6,7 +6,7 @@ import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
 import com.java.kafka.java.client.common.MPAKafkaConstants;
 
-public class MPAKafkaProducerFactory {
+public class MPAKafkaProducerExecutor {
 	public void produce(int partitionNo, String key, String message) {
 
 		MPAKafkaProducer mpaKafkaProducer = new MPAKafkaProducer(KafkaConstants.KAFKA_BROKERS);

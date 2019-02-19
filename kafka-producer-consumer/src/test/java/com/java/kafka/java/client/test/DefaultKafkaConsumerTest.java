@@ -1,11 +1,11 @@
 package com.java.kafka.java.client.test;
 
-import com.java.kafka.java.client.consumer.DefaultKafkaConsumerFactory;
+import com.java.kafka.java.client.consumer.DefaultKafkaConsumerExecutor;
 
 public class DefaultKafkaConsumerTest {
 	public static void main(String[] args) {
 
-		DefaultKafkaConsumerFactory kafkaConsumer = new DefaultKafkaConsumerFactory();
+		DefaultKafkaConsumerExecutor kafkaConsumer = new DefaultKafkaConsumerExecutor();
 
 		kafkaConsumer.execute();
 		

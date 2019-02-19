@@ -5,7 +5,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
 
-public class DefaultKafkaProducerFactory {
+public class DefaultKafkaProducerExecutor {
 	
 	public void produce(String message) {
 

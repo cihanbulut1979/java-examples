@@ -1,6 +1,6 @@
 package com.java.kafka.java.client.test;
 
-import com.java.kafka.java.client.producer.MPAKafkaProducerFactory;
+import com.java.kafka.java.client.producer.MPAKafkaProducerExecutor;
 
 public class MPAKafkaProducerTest {
 	public static void main(String[] args) {
@@ -11,7 +11,7 @@ public class MPAKafkaProducerTest {
 			String key = i + "";
 			String message = "Test Message : " + i;
 
-			MPAKafkaProducerFactory mpaKafkaProducer = new MPAKafkaProducerFactory();
+			MPAKafkaProducerExecutor mpaKafkaProducer = new MPAKafkaProducerExecutor();
 
 			mpaKafkaProducer.produce(partition, key, message);
 

@@ -12,7 +12,7 @@ import org.apache.kafka.common.TopicPartition;
 import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
 
-public class DefaultKafkaConsumerFactory {
+public class DefaultKafkaConsumerExecutor {
 
 	public void execute() {
 
