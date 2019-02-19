@@ -1,6 +1,5 @@
 package com.java.kafka.java.client.consumer;
 
-import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -10,22 +9,21 @@ import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.clients.consumer.OffsetCommitCallback;
 import org.apache.kafka.common.TopicPartition;
 
+import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
-import com.java.kafka.java.client.common.MPAKafkaConstants;
 
-public class MPAKafkaConsumer {
-	public void execute(int partitionNo) {
-
-		// Partitions to which a consumer has to assign
-		TopicPartition partition = new TopicPartition(MPAKafkaConstants.TOPIC_NAME, partitionNo);
+public class DefaultKafkaConsumer {
+	
+	public void execute() {
 
 		// This will start a consumer in new thread
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				MPAKafkaConsumerFactory mpaKafkaConsumer = new MPAKafkaConsumerFactory(KafkaConstants.KAFKA_BROKERS);
+				DefaultKafkaConsumerFactory mpaKafkaConsumer = new DefaultKafkaConsumerFactory(
+						KafkaConstants.KAFKA_BROKERS);
 
-				mpaKafkaConsumer.subscribe(Arrays.asList(partition));
+				mpaKafkaConsumer.subscribe();
 
 				KafkaConsumer<String, String> consumer = mpaKafkaConsumer.getConsumer();
 
@@ -34,9 +32,11 @@ public class MPAKafkaConsumer {
 						ConsumerRecords records = consumer.poll(KafkaConstants.MAX_POLL_RECORDS);
 						for (Object rec : records) {
 							ConsumerRecord record = (ConsumerRecord) rec;
-							System.out
-									.println(String.format("Consumer : " + " Group - %s " + " Topic - %s, Partition - %d,  Offset = %d, Key - %s Value: %s",
-											MPAKafkaConstants.GROUP_ID_CONFIG ,  record.topic(), record.partition(), record.offset(), record.key(), record.value()));
+							System.out.println(String.format(
+									"Consumer : " + " Group - %s "
+											+ " Topic - %s, Partition - %d,  Offset = %d, Key - %s Value: %s",
+									DefaultKafkaConstants.GROUP_ID_CONFIG, record.topic(), record.partition(), record.offset(),
+									record.key(), record.value()));
 
 							// processRecord(record);
 							// storeRecordInDB(record);

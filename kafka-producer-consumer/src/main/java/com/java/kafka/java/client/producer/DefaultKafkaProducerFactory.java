@@ -2,7 +2,6 @@ package com.java.kafka.java.client.producer;
 
 import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -10,13 +9,13 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import com.java.kafka.java.client.common.KafkaConstants;
 
-public class MPAKafkaProducerFactory {
+public class DefaultKafkaProducerFactory {
 
 	private Properties props;
 
 	private KafkaProducer kafkaProducer;
 
-	public MPAKafkaProducerFactory(String brokerString) {
+	public DefaultKafkaProducerFactory(String brokerString) {
 		props = new Properties();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);
 		//props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaConstants.CLIENT_ID);
