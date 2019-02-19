@@ -2,6 +2,7 @@ package com.java.kafka.java.client.producer;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
 import com.java.kafka.java.client.common.MPAKafkaConstants;
 
@@ -14,7 +15,7 @@ public class MPAKafkaProducer {
 
 		mpaKafkaProducer.send(record);
 
-		System.out.println("Message Sent : " + message + " Key : " + key + " to Partition : " + partitionNo);
+		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Key : " + key + " Partition : " + partitionNo + " Message : " + message);
 	}
 	
 }

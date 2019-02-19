@@ -13,7 +13,7 @@ import com.java.kafka.java.client.common.DefaultKafkaConstants;
 import com.java.kafka.java.client.common.KafkaConstants;
 
 public class DefaultKafkaConsumer {
-	
+
 	public void execute() {
 
 		// This will start a consumer in new thread
@@ -33,10 +33,10 @@ public class DefaultKafkaConsumer {
 						for (Object rec : records) {
 							ConsumerRecord record = (ConsumerRecord) rec;
 							System.out.println(String.format(
-									"Consumer : " + " Group - %s "
-											+ " Topic - %s, Partition - %d,  Offset = %d, Key - %s Value: %s",
-									DefaultKafkaConstants.GROUP_ID_CONFIG, record.topic(), record.partition(), record.offset(),
-									record.key(), record.value()));
+									"Consumer : " + " Group : %s "
+											+ " Topic : %s, Partition : %d,  Offset : %d, Key : %s Value : %s",
+									DefaultKafkaConstants.GROUP_ID_CONFIG, record.topic(), record.partition(),
+									record.offset(), record.key(), record.value()));
 
 							// processRecord(record);
 							// storeRecordInDB(record);

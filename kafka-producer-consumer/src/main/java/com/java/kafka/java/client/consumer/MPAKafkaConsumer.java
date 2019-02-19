@@ -34,9 +34,11 @@ public class MPAKafkaConsumer {
 						ConsumerRecords records = consumer.poll(KafkaConstants.MAX_POLL_RECORDS);
 						for (Object rec : records) {
 							ConsumerRecord record = (ConsumerRecord) rec;
-							System.out
-									.println(String.format("Consumer : " + " Group - %s " + " Topic - %s, Partition - %d,  Offset = %d, Key - %s Value: %s",
-											MPAKafkaConstants.GROUP_ID_CONFIG ,  record.topic(), record.partition(), record.offset(), record.key(), record.value()));
+							System.out.println(String.format(
+									"Consumer : " + " Group : %s "
+											+ " Topic : %s, Partition : %d,  Offset : %d, Key : %s Value : %s",
+									MPAKafkaConstants.GROUP_ID_CONFIG, record.topic(), record.partition(),
+									record.offset(), record.key(), record.value()));
 
 							// processRecord(record);
 							// storeRecordInDB(record);

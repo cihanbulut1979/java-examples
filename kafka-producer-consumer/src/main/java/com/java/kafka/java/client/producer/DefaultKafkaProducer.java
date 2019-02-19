@@ -15,7 +15,7 @@ public class DefaultKafkaProducer {
 
 		mpaKafkaProducer.send(record);
 
-		System.out.println("Message Sent : " + message + " Message : " + message);
+		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Message : " + message);
 	}
 	
 	
@@ -27,7 +27,7 @@ public class DefaultKafkaProducer {
 
 		mpaKafkaProducer.send(record);
 
-		System.out.println("Message Sent : " + message + " Key : " + key + " Message : " + message);
+		System.out.println("Message Sent : Topic : " + DefaultKafkaConstants.TOPIC_NAME + " Key : " + key + " Message : " + message);
 	}
 	
 }
