@@ -8,6 +8,22 @@ kafka-topics.bat --create --replication-factor 1 --partitions 3 --topic topic-2 
 ## List created topics
 kafka-topics.bat --list --zookeeper localhost:2181
 
-kafka-topics.bat --list --zookeeper localhost:2181
+kafka-topics.bat --describe topic-2 --zookeeper localhost:2181
+
+*** Ayný Topic içinde ayný Parttion I manuel olarak birden fazla consumer ile okursak (yani her consumer a ayný partititon id yi verirsek) hepsi ayný datayý okur.
+
+kafka-topics.bat --zookeeper localhost:2181 --delete --topic topic-2
+
+Topic topic-2 is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+
+1.	Stop Kafka server
+2.	Delete the topic directory with rm -rf command
+3.	Connect to Zookeeper instance: zookeeper-shell.sh host:port
+4.	ls /brokers/topics
+5.	Remove the topic folder from ZooKeeper using rmr /brokers/topics/yourtopic
+6.	Restart Kafka server
+7.	Confirm if it was deleted or not by using this command kafka-topics.sh --list --zookeeper host:port
+
 
 
