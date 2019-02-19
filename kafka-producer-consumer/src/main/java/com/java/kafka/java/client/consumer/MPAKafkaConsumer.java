@@ -15,7 +15,7 @@ public class MPAKafkaConsumer {
 	private Properties props;
 	private KafkaConsumer<String, String> consumer;
 
-	public MPAKafkaConsumer(String brokerString, String group) {
+	public MPAKafkaConsumer(String brokerString) {
 
 		props = new Properties();
 
