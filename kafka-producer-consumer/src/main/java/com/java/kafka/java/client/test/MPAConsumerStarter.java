@@ -23,8 +23,7 @@ public class MPAConsumerStarter {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				MPAKafkaConsumer mpaKafkaConsumer = new MPAKafkaConsumer(KafkaConstants.KAFKA_BROKERS,
-						KafkaConstants.GROUP_ID_CONFIG);
+				MPAKafkaConsumer mpaKafkaConsumer = new MPAKafkaConsumer(KafkaConstants.KAFKA_BROKERS);
 
 				mpaKafkaConsumer.subscribe(Arrays.asList(partition));
 
