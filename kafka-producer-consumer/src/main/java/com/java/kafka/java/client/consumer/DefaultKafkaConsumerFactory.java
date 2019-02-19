@@ -23,6 +23,7 @@ public class DefaultKafkaConsumerFactory {
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, DefaultKafkaConstants.GROUP_ID_CONFIG);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
 		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 		// props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,
 		// KafkaConstants.MAX_POLL_RECORDS);
