@@ -1,49 +1,89 @@
 package com.java.kafka.java.client.consumer;
 
-import java.util.Collections;
-import java.util.Properties;
+import java.util.Map;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.clients.consumer.OffsetCommitCallback;
+import org.apache.kafka.common.TopicPartition;
 
 import com.java.kafka.java.client.common.DefaultKafkaConstants;
+import com.java.kafka.java.client.common.KafkaConstants;
 
-//Manual Partition Assignment  
 public class DefaultKafkaConsumerFactory {
-	private Properties props;
-	private KafkaConsumer<String, String> consumer;
 
-	public DefaultKafkaConsumerFactory(String brokerString) {
+	public void execute() {
 
-		props = new Properties();
+		// This will start a consumer in new thread
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DefaultKafkaConsumer mpaKafkaConsumer = new DefaultKafkaConsumer(
+						KafkaConstants.KAFKA_BROKERS);
 
-		final Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerString);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, DefaultKafkaConstants.GROUP_ID_CONFIG);
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
-		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-		// props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,
-		// KafkaConstants.MAX_POLL_RECORDS);
-		// props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-		// KafkaConstants.OFFSET_RESET_EARLIER);
+				mpaKafkaConsumer.subscribe();
 
-		consumer = new KafkaConsumer<>(props);
+				KafkaConsumer<String, String> consumer = mpaKafkaConsumer.getConsumer();
+
+				try {
+					while (true) {
+						ConsumerRecords records = consumer.poll(KafkaConstants.MAX_POLL_RECORDS);
+						for (Object rec : records) {
+							ConsumerRecord record = (ConsumerRecord) rec;
+							System.out.println(String.format(
+									"Consumer : " + " Group : %s "
+											+ " Topic : %s, Partition : %d,  Offset : %d, Key : %s Value : %s",
+									DefaultKafkaConstants.GROUP_ID_CONFIG, record.topic(), record.partition(),
+									record.offset(), record.key(), record.value()));
+
+							// processRecord(record);
+							// storeRecordInDB(record);
+							// storeOffsetInDB(record.topic(),
+							// record.partition(), record.offset());
+
+						}
+
+						consumer.commitAsync(new OffsetCommitCallback() {
+							public void onComplete(Map<TopicPartition, OffsetAndMetadata> offsets, Exception e) {
+								if (e != null)
+									System.out.println("Commit failed for offsets {}" + offsets + " " + e.getMessage());
+							}
+						});
+
+						// commitDbConnection
+
+						// Here is how we would use commitSync to commit offsets
+						// after we finished processing
+						// the latest batch of messages:
+
+						// We send the commit and carry on, but if the commit
+						// fails
+						// , the failure and the offsets will be logged.
+
+						// While everything is fine, we use commitAsync.
+						// It is faster, and if one commit fails, the next
+						// commit will serve as a retry.
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						consumer.commitSync();
+
+						// But if we are closing, there is no “next commit.”
+						// We call commitSync(), because it will retry until it
+						// succeeds
+						// or suffers unrecoverable failure.
+					} finally {
+						consumer.close();
+					}
+				}
+
+			}
+		}).start();
 
 	}
-
-	public void subscribe() {
-		consumer.subscribe(Collections.singletonList(DefaultKafkaConstants.TOPIC_NAME));
-	}
-
-	public Properties getProps() {
-		return props;
-	}
-
-	public KafkaConsumer<String, String> getConsumer() {
-		return consumer;
-	}
-
 }
