@@ -1,51 +1,24 @@
 package com.java.kafka.java.client.producer;
 
-import java.net.InetAddress;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
-import org.apache.kafka.common.serialization.StringSerializer;
 
-import com.java.kafka.java.client.common.KafkaConstants;
+public class DefaultKafkaProducer extends DefaultAbstractProducer<String, String> {
 
-public class DefaultKafkaProducer {
-
-	private Properties props;
-
-	private KafkaProducer kafkaProducer;
-
-	public DefaultKafkaProducer(String brokerString) {
-		props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);		
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-		
-		try{
-			props.put(ProducerConfig.CLIENT_ID_CONFIG, InetAddress.getLocalHost().getHostName());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-		kafkaProducer = new KafkaProducer(props);
+	public DefaultKafkaProducer(Properties config) {
+		super(config);
 	}
 
-	public void send(ProducerRecord record) {
-		kafkaProducer.send(record);
-	}
+	public void process(ProducerRecord<String, String> record) {
 
-	public void sendSync(ProducerRecord record) throws InterruptedException, ExecutionException {
-		long time = System.currentTimeMillis();
+		System.out.println(String.format("Producer : " + " Topic : %s, Partition : %d,  Key : %s Value : %s",
+				record.topic(), record.partition(), record.key(), record.value()));
 
-		RecordMetadata metadata = (RecordMetadata) kafkaProducer.send(record).get();
-
-		long elapsedTime = System.currentTimeMillis() - time;
-		System.out.printf("sent record(key=%s value=%s) " + "meta(partition=%d, offset=%d) time=%d\n", record.key(),
-				record.value(), metadata.partition(), metadata.offset(), elapsedTime);
+		// processRecord(record);
+		// storeRecordInDB(record);
+		// storeOffsetInDB(record.topic(),
+		// record.partition(), record.offset());
 
 	}
-
 }

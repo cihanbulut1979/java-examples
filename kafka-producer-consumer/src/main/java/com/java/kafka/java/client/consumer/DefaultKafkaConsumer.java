@@ -1,49 +1,27 @@
 package com.java.kafka.java.client.consumer;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import com.java.kafka.java.client.common.DefaultKafkaConstants;
+public class DefaultKafkaConsumer extends DefaultAbstractConsumerLoop<String, String> {
 
-//Manual Partition Assignment  
-public class DefaultKafkaConsumer {
-	private Properties props;
-	private KafkaConsumer<String, String> consumer;
-
-	public DefaultKafkaConsumer(String brokerString) {
-
-		props = new Properties();
-
-		final Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerString);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, DefaultKafkaConstants.GROUP_ID_CONFIG);
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
-		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-		// props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,
-		// KafkaConstants.MAX_POLL_RECORDS);
-		// props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-		// KafkaConstants.OFFSET_RESET_EARLIER);
-
-		consumer = new KafkaConsumer<>(props);
-
+	public DefaultKafkaConsumer(Properties config, List<String> topics) {
+		super(config, topics);
 	}
 
-	public void subscribe() {
-		consumer.subscribe(Collections.singletonList(DefaultKafkaConstants.TOPIC_NAME));
-	}
+	public void process(ConsumerRecord<String, String> record) {
 
-	public Properties getProps() {
-		return props;
-	}
+		System.out.println(String.format(
+				"Consumer : " + " Group : %s " + " Topic : %s, Partition : %d,  Offset : %d, Key : %s Value : %s",
+				"", record.topic(), record.partition(), record.offset(),
+				record.key(), record.value()));
 
-	public KafkaConsumer<String, String> getConsumer() {
-		return consumer;
-	}
+		// processRecord(record);
+		// storeRecordInDB(record);
+		// storeOffsetInDB(record.topic(),
+		// record.partition(), record.offset());
 
+	}
 }
