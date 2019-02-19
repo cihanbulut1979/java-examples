@@ -1,6 +1,6 @@
 package com.java.kafka.java.client.test;
 
-import com.java.kafka.java.client.producer.DefaultKafkaProducer;
+import com.java.kafka.java.client.producer.DefaultKafkaProducerFactory;
 
 public class DefaultKafkaProducerTest {
 	public static void main(String[] args) {
@@ -10,7 +10,7 @@ public class DefaultKafkaProducerTest {
 			String key = i + "";
 			String message = "Test Message : " + i;
 
-			DefaultKafkaProducer mpaKafkaProducer = new DefaultKafkaProducer();
+			DefaultKafkaProducerFactory mpaKafkaProducer = new DefaultKafkaProducerFactory();
 
 			mpaKafkaProducer.produce(key, message);
 
