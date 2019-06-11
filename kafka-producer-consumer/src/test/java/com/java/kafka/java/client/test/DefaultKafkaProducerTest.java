@@ -30,7 +30,7 @@ public class DefaultKafkaProducerTest {
 
 		DefaultKafkaProducer mpaKafkaProducer = new DefaultKafkaProducer(config);
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 200000; i++) {
 
 			String key = i + "";
 			String value = "Test Message : " + i;
