@@ -1,0 +1,11 @@
+$ curl -X POST "http://localhost:8080/jee-8-rest-service-1/rest/score/ties"
+$ curl -X GET "http://localhost:8080/jee-8-rest-service-1/rest/score/"
+The JSON string returned from the second command indicates that the number of ties has indeed been incremented by one:
+
+{ "wins":"0", "losses":"0", "ties": "1"}
+Now, use curl to trigger a PUT invocation with query parameters:
+
+$ curl -X PUT "http://localhost:8080/jee-8-rest-service-1/rest/score?wins=1&losses=2&ties=3"
+This PUT invocation will return the following JSON string:
+
+{ "wins":"1", "losses":"2", "ties": "3"}
