@@ -1,5 +1,8 @@
 package org.akka.essentials.grid.controller;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Address;
@@ -14,9 +17,6 @@ import akka.event.LoggingAdapter;
 import akka.kernel.Bootable;
 import akka.remote.RemoteLifeCycleEvent;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-
 public class WorkServerActorSystem implements Bootable {
 
 	private LoggingAdapter log = null;
@@ -27,9 +27,6 @@ public class WorkServerActorSystem implements Bootable {
 	private ActorRef registerRemoteWorkerActor;
 	private ActorRef remoteActorListener;
 
-	/*
-	 * default constructor
-	 */
 	@SuppressWarnings("serial")
 	public WorkServerActorSystem() {
 		// load the configuration
@@ -80,8 +77,6 @@ public class WorkServerActorSystem implements Bootable {
 	}
 
 	public void startup() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public static void main(String[] args) {
@@ -90,14 +85,6 @@ public class WorkServerActorSystem implements Bootable {
 
 	}
 
-	/**
-	 * Create a unbounded priority mailbox to make sure that the display_list
-	 * message has the least priority. The standard text messages get processed
-	 * earlier than that.
-	 * 
-	 * @author Munish
-	 * 
-	 */
 	public static class MyUnboundedPriorityMailbox extends
 			UnboundedPriorityMailbox {
 

@@ -12,6 +12,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<encoding-format>utf-8</encoding-format>
+		<mvn-compiler-plugin-version>3.2</mvn-compiler-plugin-version>
+		<mvn-jar-plugin-version>2.5</mvn-jar-plugin-version>
+		<mvn-source-plugin-version>2.4</mvn-source-plugin-version>
+		<java-version>1.8</java-version>
 	</properties>
 
 	<dependencies>
@@ -37,6 +42,24 @@
 			<version>2.1.2</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${mvn-compiler-plugin-version}</version>
+				<configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+					<compilerArguments>
+						<bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+					</compilerArguments>
+					<encoding>${encoding-format}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>typesafe</id>
