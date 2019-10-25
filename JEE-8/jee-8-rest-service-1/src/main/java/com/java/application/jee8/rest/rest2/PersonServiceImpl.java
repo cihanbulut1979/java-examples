@@ -19,7 +19,7 @@ public class PersonServiceImpl {
 
 	private static Map<Integer, PersonBean> persons = new HashMap<Integer, PersonBean>();
 
-	@POST
+	@PUT
 	@Path("/add")
 	public Response addPerson(PersonBean p) {
 		ResponseBean response = new ResponseBean();
@@ -34,7 +34,7 @@ public class PersonServiceImpl {
 		return Response.status(200).entity(response).build();
 	}
 	
-	@PUT
+	@POST
 	@Path("/update")
 	public Response updatePerson(PersonBean p) {
 		ResponseBean response = new ResponseBean();

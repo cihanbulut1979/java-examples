@@ -48,7 +48,7 @@ public class PersonServiceClient {
 		person.setAge(40);
 
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.post(Entity.entity(person, MediaType.APPLICATION_JSON));
+		Response response = invocationBuilder.put(Entity.entity(person, MediaType.APPLICATION_JSON));
 
 		System.out.println(response.getStatus());
 		System.out.println(response.readEntity(String.class));
@@ -65,7 +65,7 @@ public class PersonServiceClient {
 		person.setAge(40);
 
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.put(Entity.entity(person, MediaType.APPLICATION_JSON));
+		Response response = invocationBuilder.post(Entity.entity(person, MediaType.APPLICATION_JSON));
 
 		String userJson = response.readEntity(String.class);
 
