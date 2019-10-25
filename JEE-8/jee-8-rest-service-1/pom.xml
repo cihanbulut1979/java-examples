@@ -13,7 +13,10 @@
 		<mvn-jar-plugin-version>2.5</mvn-jar-plugin-version>
 		<mvn-source-plugin-version>2.4</mvn-source-plugin-version>
 		<java-version>11</java-version>
+
+		<jersey.version>2.27</jersey.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax</groupId>
@@ -33,22 +36,43 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>2.27</version>
+			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
-			<version>2.27</version>
+			<version>${jersey.version}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.glassfish.jersey.inject</groupId>
 			<artifactId>jersey-hk2</artifactId>
-			<version>2.27</version>
+			<version>${jersey.version}</version>
 		</dependency>
 
+		<!-- Required only when you are using JAX-RS Client -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		
+		<dependency>
+	        <groupId>org.eclipse.persistence</groupId>
+	        <artifactId>org.eclipse.persistence.moxy</artifactId>
+	        <version>2.6.0</version>
+	    </dependency>
 	</dependencies>
 	<build>
 		<plugins>
