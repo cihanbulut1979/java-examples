@@ -1,0 +1,153 @@
+Bu bölümde “synchronized” anahtar kelimesinin iþlevine alternatif bir yöntem olan 
+yeniden girilir kilitleri (re-entrant locks) inceleyeceðiz.
+
+Yeniden girilir kilitlerin çalýþma mantýðý þu þekildedir: java.util.concurrent.locks.* paketi
+ altýndaki “ReentrantLock” sýnýfý türünde yeniden girilir bir kilit oluþturulur. 
+ Ayný anda yalnýzca bir threadin girmesini istediðimiz kod bloðu yeniden girilir kilidin 
+ “lock()” ve “unlock()” metotlarýyla çevrelenir.
+
+Þimdi örnek programýmýz üzerinden incelememize devam edelim:
+
+public class Runner {
+
+    private int count = 0;
+
+    private Lock lock = new ReentrantLock();
+
+    private void increment() {
+        for (int i = 0; i < 10000; i++) {
+            count++;
+        }
+    }
+
+    public void firstThread() {
+        lock.lock();
+        increment();
+        lock.unlock();
+    }
+
+    public void secondThread() {
+        lock.lock();
+        increment();
+        lock.unlock();
+    }
+
+    public void printCount() {
+        System.out.println("Sayaç: " + count);
+    }
+
+}
+
+“Runner” sýnýfýmýzýn eþ zamanlý iki ayrý thread içerisinde iþletilecek iki metodu var: 
+“firstThread()” ve “secondThread()”. “main” metodumuz ise önceki bölümlerle benzer þeyi yapacak; 
+bahsi geçen eþ zamanlý iki threadi oluþturup baþlatacak ve threadler sonlandýðýnda 
+“Runner” sýnýfýnýn “printCount()” metodu ile sayacýn son durumunu yazdýracak.
+ Bu nedenle “main” metodunu burada vermiyorum.
+
+Bir thread “lock()” metodunu çaðýrarak o kilidi elde ettiðinde “lock()” çaðrýsý ile
+ o kilidi elde etmek isteyen diðer threadler bekletilir. Kilidi elde etmiþ thread 
+ içerisinde yeniden girilir kilidin “unlock()” metodu çaðrýlana kadar da bekletilmeye devam edilir. 
+ Böylece “increment()” metodu çaðrýlarý sanki “synchronized” blok içerisindeymiþcesine bir
+  iþlevsellik saðlanmýþ olur. Programý çalýþtýrdýðýmýzda çýktý her seferinde þu þekilde olacaktýr:
+
+Sayaç: 20000
+
+Diðer threadlerin kilidi elde edebilmesi için kilidi elde etmiþ threadin kilidi serbest býrakmasý gerekir. 
+Kilidi “ReentrantLock” nesnesine eriþimi olan baþka bir threadin serbest býrakmasý söz konusu deðildir. 
+Böyle bir durumda “IllegalMonitorStateException” istisnasýnýn fýrlatýldýðýný göreceksiniz. Dolayýsýyla kilidi elde etmiþ threadin bunu kesin olarak gerçekleþtirmesi gerekmektedir. Peki ya çalýþmasý sýrasýnda bir istisna fýrlatýlýr ve o thread henüz “unlock()” çaðrýsýný yapamadan sonlanýrsa? Ýþte bu nedenle “lock()” ve “unlock()” çaðrýlarý arasýnda kalan kod bloðunun “try”, “unlock()” çaðrýsýnýn “finally” içerisine alýnmasý yerinde bir pratik olacaktýr. Böylece istisna fýrlatýlmasý halinde dahi kilit serbest býrakýlmýþ olur:
+
+public class Runner {
+
+    ...
+
+    public void firstThread() {
+        lock.lock();
+        try {
+            increment();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void secondThread() {
+        lock.lock();
+        try {
+            increment();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    ...
+
+}
+
+Yeniden girilir kilitlerin “synhronized” kod bloklarýna bir alternatif olarak nasýl kullanýlabileceklerini öðrenmiþ olduk. Peki önceki bölümde incelediðimiz ve bize koþula göre bir threadi bekletme ve sonrasýnda sürdürme iþlevselliðini kazandýran “wait()” ve “notify()” metotlarýnýn bu alternatif yöntemdeki karþýlýðý nedir?
+
+Bunun için “lock.newCondition()” çaðrýsýndan elde edilecek bir “java.util.concurrent.locks.Condition” nesnesine ihtiyacýmýz olacak. “Condition” sýnýfýnýn “await()” metodu “wait()” metoduna, “signal()” metodu ise “notify()” metoduna karþýlýk gelmektedir.
+
+Þimdi “Condition” nesnesini ve bu metotlarý kullanarak “Runner” sýnýfýmýzý önceki bölümde yer alan “Processor” sýnýfýna benzer bir yapýya kavuþturalým:
+
+public class Runner {
+
+    private int count = 0;
+
+    private Lock lock = new ReentrantLock();
+
+    private Condition condition = lock.newCondition();
+
+    private void increment() {
+        for (int i = 0; i < 10000; i++) {
+            count++;
+        }
+    }
+
+    public void firstThread() throws InterruptedException {
+        lock.lock();
+
+        System.out.println("Thread 1 çalýþýyor...");
+
+        condition.await();
+
+        System.out.println("Thread 1 devam ediyor...");
+
+        try {
+            increment();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void secondThread() throws InterruptedException {
+        Thread.sleep(2000);
+
+        lock.lock();
+
+        System.out.println("Thread 2 çalýþýyor...");
+        System.out.print("Devam etmek için 'Enter'a basýnýz: ");
+
+        new Scanner(System.in).nextLine();
+
+        condition.signal();
+
+        System.out.println("Thread 2 devam ediyor...");
+
+        try {
+            increment();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    ...
+
+}
+
+Önce birinci threadin kilidi elde ettiðinden emin olmak için ikinci threadi 2 saniyeliðine bekletiyoruz. Programý çalýþtýrdýðýmýzda çýktýmýz aþaðýdaki þekilde olacaktýr:
+
+Thread 1 çalýþýyor...
+Thread 2 çalýþýyor...
+Devam etmek için 'Enter'a basýnýz: 
+Thread 2 devam ediyor...
+Thread 1 devam ediyor...
+Sayaç: 20000
