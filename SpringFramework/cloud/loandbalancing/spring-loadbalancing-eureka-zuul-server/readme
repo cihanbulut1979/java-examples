@@ -1,0 +1,69 @@
+
+
+Eureka Client
+Discovery Client yaratmak için bazı Spring Discovery Client’ları (spring-cloud-starter-netflix-eureka-client) bağımlılıklarımıza ekliyoruz.
+@Configuration @EnableDiscoveryClient veya @EnableEurekaClient ile eklememiz gerekir. 
+Fakat spring-cloud-starter-netflix-eureka-client bağımlılığı eklediğimizde bizim yerimize bunları ekleyecektir.
+Uygulamada bir örnek olması açısından REST kullanabilmemiz için spring-boot-starter-web bağımlılığını da ekliyoruz.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-starter</artifactId>
+    <version>2.0.2.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.0.1.RELEASE</version>
+</dependency>
+
+Varolan bir projeye eureka-client yeteneği kazandırmak için ise aşağıdaki gibi spring-cloud-starter-netflix-eureka-client bağımlılığını da ekliyoruz.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+
+
+http://192.168.56.1:58324/actuator/health
+
+Tarayıcıda 
+http://localhost:8762/routes 
+adresini çağırıyoruz. 
+Bu istek ile Eureka üzerinde Zuul için erişilebilen tüm yolları görüyor olacağız:
+{"/spring-cloud-eureka-client/**":"spring-cloud-eureka-client"}
+
+
+Artık, Eureka Client ile, Zuul Proxy kullanarak iletişim kuracağız
+Spring Cloud Netflix-Eureka 
+
+Client ta uygulama adı “spring-cloud-eureka-client” olarak vermiştik. Bu uygulama üzerinde “/greeting” restini kullanıyorduk. Bu restin içerisine uygulamanın yayınlandığı port bilgisini de ekliyoruz. Bunu Zuul üzerinden çağırmak için isteğimizi düzenlememiz gerekiyor. Tarayıcıda http://localhost:8762/spring-cloud-eureka-client/greeting olarak isteği göndereceğiz ve aşağıdaki cevabı görüyor olmamız gerekiyor.
+Hello from ‘SPRING-CLOUD-EUREKA-CLIENT with Port Number 8081’!
+
+
+Zuul ile Load Balancing
+Zuul bir istek aldığında, mevcut fiziksel konumlardan birini seçer ve talepleri servis instance larına iletir.
+Servis instance larının yerini önbelleğe alma ve isteği gerçek konuma iletme işleminin tamamı hiçbir ek yapılandırma gerektirmez.
+Zuul kendi içirisinde Netflix Ribbon’u kullanmaktadır.
+
+
+Load Balancing Örneği
+Tarayıcıda http://localhost:8762/spring-cloud-eureka-client/greeting
+
+
+Birden Fazla Instance Kaydetme
+8081 ve 8082 portlarından iki instance çalıştırarak başlayacağız.
+Tüm instance lar ayağa kalktıktan sonra, loglarda instanceların fiziksel konumlarının DynamicServerListLoadBalancer’a register olduğunu ve Zuul Controller’a maplendiğini görebiliriz:
+
+Tarayıcıda http://localhost:8762/spring-cloud-eureka-client/greeting adresini birkaç kez çağıralım.
+Her seferinde aşağıdaki gibi farklı sonuçlar görmemiz gerekiyor:
+Hello from ‘SPRING-CLOUD-EUREKA-CLIENT with Port Number 8081’!
+Hello from ‘SPRING-CLOUD-EUREKA-CLIENT with Port Number 8082’!
+Hello from ‘SPRING-CLOUD-EUREKA-CLIENT with Port Number 8081’!
+Zuul tarafından alınan her talep, sırayla farklı bir instance a iletilir. Başka bir instance başlar ve Eureka’ya kaydedersek, Zuul otomatik olarak istekleri ona da iletmeye başlar:
+
+Zuul’un yük dengeleme stratejisini başka bir Netflix Ribbon stratejisiyle de değiştirebiliriz. Bu stratejiyle ilgili detayları Ribbon’u detaylı inceleyerek bulabilirsiniz.
+Sonuç olarak, Zuul, Rest Service’in tüm intance ları için tek bir URL sağlar ve istekleri sırayla instance lara göndererek load balancing yapar.
+
+http://localhost:8762/spring-cloud-eureka-client/greeting
+

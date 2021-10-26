@@ -1,0 +1,75 @@
+
+
+Eureka Client
+Discovery Client yaratmak için bazı Spring Discovery Client’ları (spring-cloud-starter-netflix-eureka-client) bağımlılıklarımıza ekliyoruz.
+@Configuration @EnableDiscoveryClient veya @EnableEurekaClient ile eklememiz gerekir. 
+Fakat spring-cloud-starter-netflix-eureka-client bağımlılığı eklediğimizde bizim yerimize bunları ekleyecektir.
+Uygulamada bir örnek olması açısından REST kullanabilmemiz için spring-boot-starter-web bağımlılığını da ekliyoruz.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-starter</artifactId>
+    <version>2.0.2.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.0.1.RELEASE</version>
+</dependency>
+
+Varolan bir projeye eureka-client yeteneği kazandırmak için ise aşağıdaki gibi spring-cloud-starter-netflix-eureka-client bağımlılığını da ekliyoruz.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+
+
+Feign Client
+Projemizde son olarak birden fazla uygulama ile Feign Client’ı inceleyeceğiz. 
+Örnek olarak Spring Netflix Feign Client ile RestTemplate yazacağız.
+Feign endpointler arasında iletişim kurmak için interface kullanır. 
+Bu interfaceler ile servis urlleri yerine, runtime da otomatik olarak implement edilen servis isimleri üzerinden iletişim sağlanmaktadır.
+Bu Feign olmadan EurekaClient üzerinden de yapabilirdik. 
+Application sınıfı üzerinden bütün clientları çekip, herhangi birinin bilgilerine InstanceInfo üzerinden ulaşabiliriz. 
+Bu sayede elimizde host ve port bilgileri olacağından Rest çağrısında bulunabiliriz.
+
+Örneğin;
+@Autowired
+private EurekaClient eurekaClient;
+
+public void doRequest() {
+   Application application
+      = eurekaClient.getApplication("spring-cloud-eureka-client");
+   InstanceInfo instanceInfo = application.getInstances().get(0);
+   String hostname = instanceInfo.getHostName();
+   int port = instanceInfo.getPort();
+   // ...
+}
+
+Feign Client spring-cloud-starter-feign paketinden bulunmaktadır. 
+Etkinleştirmek için @Configuration’a @EnableFeignClients eklememiz gerekmektedir. 
+Kullanımı ise yukarıda yazdığımız GreetingClient interface içerisine @FeignClient(‘servis-adı’) ekleyerek olmaktadır.
+Feign Client oluşturmak için en iyi yöntem, @RequestMapping anotasyonu ile interfaceler oluşturmak ve bunları ayrı bir modül haline getirmektir. 
+Böylece onlar client-server arasında paylaşılabilir. 
+Server tarafında, bunları @Controller olarak uygulayabilir ve client tarafında @FeignClient anotasyonu kullanılabilir ve extend edilebilir.
+Ayrıca spring-cloud-starter-eureka package bağımlılığını projemize eklememiz ile @EnableEurekaClient anotasyonunu otomatik kullanmış olduk.
+spring-boot-starter-web ve spring-boot-starter-thymeleaf bağımlılıklarını, Rest servis ile getirilen verileri sunmak için kullanıyoruz.
+Örnek olarak Feign Client interface’imiz aşağıdaki gibi olacaktır.
+
+@FeignClient("spring-cloud-eureka-client")
+public interface GreetingClient {
+   @RequestMapping("/greeting")
+   String greeting();
+}
+
+
+http://192.168.56.1:58324/actuator/health
+http://localhost:8761/
+http://localhost:8762/routes
+http://localhost:8762/spring-cloud-eureka-client/greeting
+http://localhost:8080/get-greeting
+
+
+
+

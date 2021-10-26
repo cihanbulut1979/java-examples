@@ -1,0 +1,18 @@
+
+http://localhost:8888/actuator
+http://localhost:8888/actuator-demo-app/actuator
+http://localhost:8888/actuator-demo-app/actuator/beans
+http://localhost:8888/actuator-demo-app/actuator/env
+http://localhost:8888/actuator-demo-app/actuator/caches
+http://localhost:8888/actuator-demo-app/actuator/mappings
+
+http://localhost:8888/actuator-demo-app/actuator/health
+{"status":"UP"}
+
+http://localhost:8888/actuator-demo-app/check/get
+
+http://localhost:8888/actuator-demo-app/actuator/random
+#Endpoint, JmxEndpoint
+
+
+

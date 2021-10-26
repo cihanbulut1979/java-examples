@@ -1,0 +1,100 @@
+
+
+ab.exe -n 100 http://localhost:8888/circuit-breaker-demo-app/evaluate
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient).....done
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            8888
+
+Document Path:          /circuit-breaker-demo-app/evaluate
+Document Length:        2 bytes
+
+Concurrency Level:      1
+Time taken for tests:   1.643 seconds
+Complete requests:      100
+Failed requests:        75
+   (Connect: 0, Receive: 0, Length: 75, Exceptions: 0)
+Non-2xx responses:      75
+Total transferred:      21275 bytes
+HTML transferred:       10100 bytes
+Requests per second:    60.87 [#/sec] (mean)
+Time per request:       16.428 [ms] (mean)
+Time per request:       16.428 [ms] (mean, across all concurrent requests)
+Transfer rate:          12.65 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    1   1.2      1      11
+Processing:     6   15  10.0     14      96
+Waiting:        3   12   9.9     10      92
+Total:          7   16  10.1     14      97
+
+Percentage of the requests served within a certain time (ms)
+  50%     14
+  66%     16
+  75%     17
+  80%     18
+  90%     22
+  95%     29
+  98%     43
+  99%     97
+ 100%     97 (longest request)
+ 
+-------------------------------------------------------------------------------------------------------
+
+ab.exe -n 100 http://localhost:8888/circuit-breaker-demo-app/evaluate
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient).....done
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            8888
+
+Document Path:          /circuit-breaker-demo-app/evaluate
+Document Length:        134 bytes
+
+Concurrency Level:      1
+Time taken for tests:   2.278 seconds
+Complete requests:      100
+Failed requests:        18
+   (Connect: 0, Receive: 0, Length: 18, Exceptions: 0)
+Non-2xx responses:      82
+Total transferred:      22010 bytes
+HTML transferred:       11024 bytes
+Requests per second:    43.91 [#/sec] (mean)
+Time per request:       22.776 [ms] (mean)
+Time per request:       22.776 [ms] (mean, across all concurrent requests)
+Transfer rate:          9.44 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    1   0.5      1       1
+Processing:     6   22  41.6     13     417
+Waiting:        3   19  41.5     10     413
+Total:          7   23  41.6     14     418
+
+Percentage of the requests served within a certain time (ms)
+  50%     14
+  66%     19
+  75%     23
+  80%     24
+  90%     39
+  95%     46
+  98%     64
+  99%    418
+ 100%    418 (longest request)
+ 
+ ------------------------------------------------------------------------------------------
+-hızlı response döndü
+-manuel response, immediately
+-

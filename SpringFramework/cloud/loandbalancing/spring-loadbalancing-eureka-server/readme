@@ -1,0 +1,40 @@
+
+Spring Cloud — Netflix Eureka
+
+Spring Cloud Netflix Eureka, servislerin makina adı ve bağlantı noktasına ihtiyaç olmaksızın birbirleriyle iletişim kurmasını sağlar. 
+Bu mimarideki tek önemli nokta, her servisin kayıt olması gereken bir servis olmasıdır.
+Netflix Eureka ile tüm bağlı clientların listesini alınır ve load balancing algoritması ile servislere istekler dağıtılır. 
+Bunun için her servis ayağa kalktığında eureka servera bir heartbeat sinyal gönderir ve kayıt olur.
+
+Eureka Server
+Service registry kullanmak için Eureka Server’ı ‘spring-cloud-starter-netflix-eureka-server’ ile bağımlılıklara ekliyoruz. 
+Eureka Server’ı aktifleştirmek için ‘SpringBootApplication’ anotasyonu ile birlikte ‘EnableEurekaServer’ anotasyonunu kullanıyoruz.
+Öncelikle yeni bir Maven projesi oluşturacağız ve bağımlılıkları buna ekleyeceğiz. 
+Tüm projelerde spring-cloud-starter-parent bağımlılığı ekliyoruz.
+
+
+Burada uygulama portunu belirtiyoruz. Eureka Server için varsayılan port 8761 olarak verilmiştir. 
+Devamında Eureka Client’ına kendisi ile register olmamasını belirttik. 
+Şimdilik uygulamanın sadece bir server gibi davranmasını istiyoruz.
+
+
+TransportException: Cannot execute request on any known server
+Eureka sunucusunu çalıştırırken, genellikle aşağıdaki gibi hatayla karşılaşabiliriz.
+com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
+Bu hata genellikle application.properties veya application.yml içerisindeki yanlış yapılandırmadan kaynaklı oluşmaktadır. Eureka, client için konfigüre edilebilen iki özellik sunar.
+registerWithEureka: Bu özelliği true olarak yaparsak, sunucu içerisinde client başlatılırken Eureka sunucusuna kendini kaydetmeyi deneyecektir.
+fetchRegistry: Bu özelliği true olarak yapılandırırsak, client Eureka kayıt defterini almaya çalışacaktır.
+Artık Eureka sunucusunu başlattığımızda, kendini sunucuyla yapılandırmak için client kaydını yapmak istemiyoruz.
+Sunucu başlatılırken yukarıdaki özellikleri true olarak işaretlersek(varsayılan olarak true gelmekte), client Eureka sunucusuyla kendini kaydetmeye çalışır ve henüz mevcut olmayan kayıt defterini almaya çalışır. Bunun sonucunda, TransportException’ı alırız.
+Bu yüzden Eureka sunucu uygulamalarında bu özellikleri asla true olarak yapılandırmamalıyız. Application.yml içine konması gereken doğru ayarlar şu şekilde olmalıdır.
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+Artık Spring Netflix Eureka Sunucusu’nu kullanarak bir servis kaydı yapabiliyoruz ve bazı Eureka Clientlarını bununla birlikte kaydedebiliyoruz.
+Eureka Clientlarımızı rastgele portlarla ayağa kaldırıp sunucuya kaydettik. 
+Feign Client sayesinde port bilgisi değişse bile bulabilir ve çağırabiliriz.
+
+http://localhost:8761/
+
+

@@ -1,0 +1,30 @@
+
+
+Eureka Client
+Discovery Client yaratmak için bazı Spring Discovery Client’ları (spring-cloud-starter-netflix-eureka-client) bağımlılıklarımıza ekliyoruz.
+@Configuration @EnableDiscoveryClient veya @EnableEurekaClient ile eklememiz gerekir. 
+Fakat spring-cloud-starter-netflix-eureka-client bağımlılığı eklediğimizde bizim yerimize bunları ekleyecektir.
+Uygulamada bir örnek olması açısından REST kullanabilmemiz için spring-boot-starter-web bağımlılığını da ekliyoruz.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-starter</artifactId>
+    <version>2.0.2.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.0.1.RELEASE</version>
+</dependency>
+
+Varolan bir projeye eureka-client yeteneği kazandırmak için ise aşağıdaki gibi spring-cloud-starter-netflix-eureka-client bağımlılığını da ekliyoruz.
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+
+
+http://192.168.56.1:58324/actuator/health
+
+
