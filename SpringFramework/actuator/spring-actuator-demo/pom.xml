@@ -45,11 +45,11 @@
 
 	<repositories>
         <repository>
-            <id>innova-maven-public</id>
+            <id>bulutt-maven-public</id>
             <url>http://192.168.0.27:8081/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>innova-maven-thirdparty</id>
+            <id>bulutt-maven-thirdparty</id>
             <url>http://192.168.0.27:8081/repository/thirdparty/</url>
         </repository>
         <repository>
@@ -60,11 +60,11 @@
 
     <distributionManagement>
         <repository>
-            <id>pluton-maven-releases</id>
+            <id>bulutt-maven-releases</id>
             <url>http://192.168.0.27:8081/repository/maven-releases/</url>            
         </repository>
         <snapshotRepository>
-            <id>pluton-maven-snapshots</id>
+            <id>bulutt-maven-snapshots</id>
             <url>http://192.168.0.27:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
