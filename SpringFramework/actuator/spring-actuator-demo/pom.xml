@@ -42,4 +42,31 @@
 		</plugins>
 	</build>
 
+
+	<repositories>
+        <repository>
+            <id>innova-maven-public</id>
+            <url>http://192.168.0.27:8081/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>innova-maven-thirdparty</id>
+            <url>http://192.168.0.27:8081/repository/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>pluton-maven-releases</id>
+            <url>http://192.168.0.27:8081/repository/maven-releases/</url>            
+        </repository>
+        <snapshotRepository>
+            <id>pluton-maven-snapshots</id>
+            <url>http://192.168.0.27:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    
 </project>
